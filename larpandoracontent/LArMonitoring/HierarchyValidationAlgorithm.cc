@@ -52,7 +52,9 @@ StatusCode HierarchyValidationAlgorithm::Run()
     const MCParticleList *pMCParticleList(nullptr);
     PANDORA_RETURN_RESULT_IF(STATUS_CODE_SUCCESS, !=, PandoraContentApi::GetCurrentList(*this, pMCParticleList));
     const PfoList *pPfoList(nullptr);
-    PANDORA_RETURN_RESULT_IF(STATUS_CODE_SUCCESS, !=, PandoraContentApi::GetList(*this, m_pfoListName, pPfoList));
+    StatusCode status{PandoraContentApi::GetList(*this, m_pfoListName, pPfoList)};
+    if (status != STATUS_CODE_SUCCESS)
+        pPfoList = new PfoList();
 
     LArHierarchyHelper::FoldingParameters foldParameters;
     if (m_foldToPrimaries)
@@ -76,6 +78,8 @@ StatusCode HierarchyValidationAlgorithm::Run()
     else if (m_validateMC)
         this->MCValidation(matchInfo);
 #endif
+    if (status != STATUS_CODE_SUCCESS)
+        delete pPfoList;
 
     return STATUS_CODE_SUCCESS;
 }
