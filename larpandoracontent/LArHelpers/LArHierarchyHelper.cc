@@ -58,7 +58,7 @@ LArHierarchyHelper::FoldingParameters::FoldingParameters(const int foldingTier) 
 //------------------------------------------------------------------------------------------------------------------------------------------
 //------------------------------------------------------------------------------------------------------------------------------------------
 
-LArHierarchyHelper::QualityCuts::QualityCuts() : m_minPurity{0.8f}, m_minCompleteness{0.65f}
+LArHierarchyHelper::QualityCuts::QualityCuts() : m_minPurity{0.5f}, m_minCompleteness{0.5f}
 {
 }
 
@@ -774,8 +774,8 @@ const std::string LArHierarchyHelper::MCHierarchy::Node::ToString(const std::str
 //------------------------------------------------------------------------------------------------------------------------------------------
 
 LArHierarchyHelper::MCHierarchy::ReconstructabilityCriteria::ReconstructabilityCriteria() :
-    m_minHits{30},
-    m_minHitsForGoodView{10},
+    m_minHits{3},
+    m_minHitsForGoodView{1},
     m_minGoodViews{2},
     m_removeNeutrons{true}
 {
