@@ -20,7 +20,8 @@ namespace lar_content
 {
 
 CheatingClusterMergingAlgorithm::CheatingClusterMergingAlgorithm() :
-    m_maxClusterFraction(0.25f)
+    m_maxClusterFraction(0.25f),
+    m_minNCaloHits(1)
 {
     if (m_maxClusterFraction < 0)
         std::cout << "WARN: m_maxClusterFraction can not be below 0!" << std::endl;
@@ -91,7 +92,7 @@ bool CheatingClusterMergingAlgorithm::IsValidToUse(const Cluster *const cluster,
     if (!cluster->IsAvailable())
         return false;
 
-    if (cluster->GetNCaloHits() < 1)
+    if (cluster->GetNCaloHits() < m_minNCaloHits)
         return false;
 
     if (clusterIsUsed.count(cluster) > 0)
@@ -166,6 +167,12 @@ StatusCode CheatingClusterMergingAlgorithm::ReadSettings(const TiXmlHandle xmlHa
 
     PANDORA_RETURN_RESULT_IF_AND_IF(STATUS_CODE_SUCCESS, STATUS_CODE_NOT_FOUND, !=, XmlHelper::ReadValue(xmlHandle,
         "MCParticleListName", m_mcParticleListName));
+
+    PANDORA_RETURN_RESULT_IF_AND_IF(STATUS_CODE_SUCCESS, STATUS_CODE_NOT_FOUND, !=, XmlHelper::ReadValue(xmlHandle,
+        "MaxClusterFraction", m_maxClusterFraction));
+
+    PANDORA_RETURN_RESULT_IF_AND_IF(STATUS_CODE_SUCCESS, STATUS_CODE_NOT_FOUND, !=, XmlHelper::ReadValue(xmlHandle,
+        "MinNCaloHits", m_minNCaloHits));
 
     return STATUS_CODE_SUCCESS;
 }
