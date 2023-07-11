@@ -688,19 +688,32 @@ void DlVertexingAlgorithm::GetHitRegion(const CaloHitList &caloHitList, float &x
     // to be one pixel wider than this
     const float xRange{xMax - xMin}, zRange{zMax - zMin};
     const float minXSpan{m_driftStep * (m_width - 1)};
+    //std::cout << "NEW VIEW: " << view << std::endl;
+    //std::cout << "xRange: " << xRange << std::endl;
+    //std::cout << "zRange: " << zRange << std::endl;
+    //std::cout << std::endl;
+    //std::cout << "Pitch: " << pitch << std::endl;
+    //std::cout << "Width: " << m_width << std::endl;
+    //std::cout << "Height: " << m_height << std::endl;
+    //std::cout << std::endl;
     if (xRange < minXSpan)
     {
         const float padding{0.5f * (minXSpan - xRange)};
+        //std::cout << "xpadding: " << padding << std::endl;
         xMin -= padding;
         xMax += padding;
     }
     const float minZSpan{pitch * (m_height - 1)};
+    //std::cout << "minXSpan: " << minXSpan << std::endl;
+    //std::cout << "minZSpan: " << minZSpan << std::endl;
     if (zRange < minZSpan)
     {
         const float padding{0.5f * (minZSpan - zRange)};
+        //std::cout << "zpadding: " << padding << std::endl;
         zMin -= padding;
         zMax += padding;
     }
+    //std::cout << std::endl;
 }
 
 //-----------------------------------------------------------------------------------------------------------------------------------------
