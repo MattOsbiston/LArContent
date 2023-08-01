@@ -22,6 +22,7 @@
 #include "larpandoracontent/LArCheating/CheatingCosmicRayShowerMatchingAlg.h"
 #include "larpandoracontent/LArCheating/CheatingCosmicRayTaggingTool.h"
 #include "larpandoracontent/LArCheating/CheatingEventSlicingTool.h"
+#include "larpandoracontent/LArCheating/CheatingLongitudinalAssociationAlgorithm.h"
 #include "larpandoracontent/LArCheating/CheatingNeutrinoCreationAlgorithm.h"
 #include "larpandoracontent/LArCheating/CheatingNeutrinoDaughterVerticesAlgorithm.h"
 #include "larpandoracontent/LArCheating/CheatingNeutrinoIdTool.h"
@@ -58,6 +59,7 @@
 #include "larpandoracontent/LArMonitoring/ShowerTensorVisualizationTool.h"
 #include "larpandoracontent/LArMonitoring/TestBeamEventValidationAlgorithm.h"
 #include "larpandoracontent/LArMonitoring/TestBeamHierarchyEventValidationAlgorithm.h"
+#include "larpandoracontent/LArMonitoring/TopologyCalorimetryMonitoringAlgorithm.h"
 #include "larpandoracontent/LArMonitoring/TransverseMatrixVisualizationTool.h"
 #include "larpandoracontent/LArMonitoring/TransverseTensorVisualizationTool.h"
 #include "larpandoracontent/LArMonitoring/VertexMonitoringAlgorithm.h"
@@ -221,6 +223,7 @@
     d("LArTestBeamEventValidation",             TestBeamEventValidationAlgorithm)                                               \
     d("LArTestBeamHierarchyEventValidation",    TestBeamHierarchyEventValidationAlgorithm)                                      \
     d("LArHierarchyMonitoring",                 HierarchyMonitoringAlgorithm)                                                   \
+    d("LArTopologyCalorimetryMonitoring",       TopologyCalorimetryMonitoringAlgorithm)                                         \
     d("LArHierarchyValidation",                 HierarchyValidationAlgorithm)                                                   \
     d("LArPfoValidation",                       PfoValidationAlgorithm)                                                         \
     d("LArMCParticleMonitoring",                MCParticleMonitoringAlgorithm)                                                  \
@@ -234,6 +237,7 @@
     d("LArCheatingClusterCreation",             CheatingClusterCreationAlgorithm)                                               \
     d("LArCheatingCosmicRayIdentification",     CheatingCosmicRayIdentificationAlg)                                             \
     d("LArCheatingCosmicRayShowerMatching",     CheatingCosmicRayShowerMatchingAlg)                                             \
+    d("LArCheatingLongitudinalAssociation", CheatingLongitudinalAssociationAlgorithm)                                  \
     d("LArCheatingNeutrinoCreation",            CheatingNeutrinoCreationAlgorithm)                                              \
     d("LArCheatingNeutrinoDaughterVertices",    CheatingNeutrinoDaughterVerticesAlgorithm)                                      \
     d("LArCheatingPfoCharacterisation",         CheatingPfoCharacterisationAlgorithm)                                           \
