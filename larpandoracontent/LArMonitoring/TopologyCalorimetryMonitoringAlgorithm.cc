@@ -19,7 +19,7 @@ using namespace pandora;
 namespace lar_content
 {
 
-TopologyCalorimetryMonitoringAlgorithm::TopologyCalorimetryMonitoringAlgorithm() : m_treename{"mc"}
+TopologyCalorimetryMonitoringAlgorithm::TopologyCalorimetryMonitoringAlgorithm() : m_writeTree{true}
 {
 }
 //------------------------------------------------------------------------------------------//
@@ -41,8 +41,12 @@ StatusCode TopologyCalorimetryMonitoringAlgorithm::Run()
                 continue;
             }
 
-             this->TopologyCalorimetryMonitoring(pClusterList);
-
+            this->TopologyCalorimetryMonitoring(pClusterList);
+        
+            if (m_writeTree)
+            {
+                PANDORA_MONITORING_API(SaveTree(this->GetPandora(), m_treeName.c_str(), m_fileName.c_str(), "UPDATE"));
+            }     
         }
         catch (StatusCodeException &statusCodeException)
         {
@@ -77,10 +81,10 @@ void TopologyCalorimetryMonitoringAlgorithm::TopologyCalorimetryMonitoring(const
                 std::cout << axis  << std::endl;
             }
 
-            PANDORA_MONITORING_API(SetTreeVariable(this->GetPandora(), m_treename.c_str(), "PcaX", pcaX));
-            PANDORA_MONITORING_API(SetTreeVariable(this->GetPandora(), m_treename.c_str(), "PcaY", pcaY));
-            PANDORA_MONITORING_API(SetTreeVariable(this->GetPandora(), m_treename.c_str(), "PcaZ", pcaZ));
-            PANDORA_MONITORING_API(FillTree(this->GetPandora(), m_treename.c_str()));
+            PANDORA_MONITORING_API(SetTreeVariable(this->GetPandora(), m_treeName.c_str(), "PcaX", pcaX));
+            PANDORA_MONITORING_API(SetTreeVariable(this->GetPandora(), m_treeName.c_str(), "PcaY", pcaY));
+            PANDORA_MONITORING_API(SetTreeVariable(this->GetPandora(), m_treeName.c_str(), "PcaZ", pcaZ));
+            PANDORA_MONITORING_API(FillTree(this->GetPandora(), m_treeName.c_str()));
         }
     }
 
@@ -93,12 +97,14 @@ StatusCode TopologyCalorimetryMonitoringAlgorithm::ReadSettings(const TiXmlHandl
 {
     PANDORA_RETURN_RESULT_IF(STATUS_CODE_SUCCESS, !=, XmlHelper::ReadVectorOfValues(xmlHandle, "InputClusterListNames", m_inputClusterListNames));
 
-    PANDORA_RETURN_RESULT_IF_AND_IF(STATUS_CODE_SUCCESS, STATUS_CODE_NOT_FOUND, !=, XmlHelper::ReadValue(xmlHandle,
-        "MCParticleListName", m_mcParticleListName));
+    PANDORA_RETURN_RESULT_IF_AND_IF(STATUS_CODE_SUCCESS, STATUS_CODE_NOT_FOUND, !=, XmlHelper::ReadValue(xmlHandle, "MCParticleListName", m_mcParticleListName));
  
-    PANDORA_RETURN_RESULT_IF_AND_IF(STATUS_CODE_SUCCESS, STATUS_CODE_NOT_FOUND, !=, XmlHelper::ReadValue(xmlHandle,
-        "TreeName", m_treename));
+    PANDORA_RETURN_RESULT_IF(STATUS_CODE_SUCCESS, !=, XmlHelper::ReadValue(xmlHandle, "TreeName", m_treeName));
 
+    PANDORA_RETURN_RESULT_IF(STATUS_CODE_SUCCESS, !=, XmlHelper::ReadValue(xmlHandle, "FileName", m_fileName));
+
+    PANDORA_RETURN_RESULT_IF_AND_IF(STATUS_CODE_SUCCESS, STATUS_CODE_NOT_FOUND, !=, XmlHelper::ReadValue(xmlHandle, "WriteTree", m_writeTree));
+ 
     return STATUS_CODE_SUCCESS;
 }
 

@@ -47,8 +47,9 @@ private:
 
     pandora::StringVector  m_inputClusterListNames; ///< The names of the input cluster lists.
     std::string            m_mcParticleListName;    ///< Input MC particle list name.
-    std::string            m_treename;              ///< Input name for tree 
-
+    std::string            m_treeName;              ///< Input name for ROOT tree
+    std::string            m_fileName;              ///< Input name for ROOT file
+    bool                   m_writeTree;             ///< Do you want to write the tree?
 };
 
 } // namespace lar_content
