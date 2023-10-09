@@ -47,6 +47,7 @@ StatusCode MCParticleMonitoringAlgorithm::Run()
     LArMCParticleHelper::SelectReconstructableMCParticles(
         pMCParticleList, pCaloHitList, parameters, LArMCParticleHelper::IsBeamNeutrinoFinalState, nuMCParticlesToGoodHitsMap);
 
+     
     if (!m_useTrueNeutrinosOnly)
     {
         LArMCParticleHelper::SelectReconstructableMCParticles(

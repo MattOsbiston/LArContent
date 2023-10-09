@@ -311,7 +311,7 @@ public:
      *  @return  the smallest distance
      */
     static float GetClosestDistanceToPoint2D(const pandora::CaloHit *const pCaloHit, const pandora::CartesianVector &point2D);
-
+    
     /**
      *  @brief  Find the smallest separation between a hit and a list of hits, with the consideration of their hit widths
      *
@@ -331,6 +331,7 @@ public:
      *  @return the smallest separation
      */
     static float GetClosestDistance(const pandora::CaloHit *const pCaloHit1, const pandora::CaloHit *const pCaloHit2);
+
 };
 
 //------------------------------------------------------------------------------------------------------------------------------------------

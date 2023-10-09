@@ -58,7 +58,7 @@ LArHierarchyHelper::FoldingParameters::FoldingParameters(const int foldingTier) 
 //------------------------------------------------------------------------------------------------------------------------------------------
 //------------------------------------------------------------------------------------------------------------------------------------------
 
-LArHierarchyHelper::QualityCuts::QualityCuts() : m_minPurity{0.8f}, m_minCompleteness{0.65f}
+LArHierarchyHelper::QualityCuts::QualityCuts() : m_minPurity{0.5f}, m_minCompleteness{0.5f}
 {
 }
 
@@ -79,7 +79,9 @@ LArHierarchyHelper::MCHierarchy::MCHierarchy() : m_nextNodeId{1}
 
 //------------------------------------------------------------------------------------------------------------------------------------------
 
-LArHierarchyHelper::MCHierarchy::MCHierarchy(const ReconstructabilityCriteria &recoCriteria) : m_recoCriteria(recoCriteria), m_nextNodeId{1}
+LArHierarchyHelper::MCHierarchy::MCHierarchy(const ReconstructabilityCriteria &recoCriteria) :
+    m_recoCriteria(recoCriteria),
+    m_nextNodeId{1}
 {
 }
 
@@ -87,7 +89,7 @@ LArHierarchyHelper::MCHierarchy::MCHierarchy(const ReconstructabilityCriteria &r
 
 LArHierarchyHelper::MCHierarchy::~MCHierarchy()
 {
-    for (const auto &[pRoot, nodeVector] : m_interactions)
+    for (const auto &[ pRoot, nodeVector ] : m_interactions)
     {
         (void)pRoot;
         for (const Node *pNode : nodeVector)
@@ -471,8 +473,8 @@ const std::string LArHierarchyHelper::MCHierarchy::ToString() const
     {
         const LArMCParticle *const pLArRoot{dynamic_cast<const LArMCParticle *const>(pRoot)};
         if (pLArRoot)
-            str += "=== MC Interaction : PDG " + std::to_string(pLArRoot->GetParticleId()) +
-                   " Energy: " + std::to_string(pLArRoot->GetEnergy()) + " Nuance: " + std::to_string(pLArRoot->GetNuanceCode()) + "\n";
+            str += "=== MC Interaction : PDG " + std::to_string(pLArRoot->GetParticleId()) + " Energy: " + std::to_string(pLArRoot->GetEnergy()) +
+                " Nuance: " + std::to_string(pLArRoot->GetNuanceCode()) + "\n";
         else
             str += "=== MC Interaction : PDG " + std::to_string(pRoot->GetParticleId()) + " Energy: " + std::to_string(pRoot->GetEnergy()) + "\n";
         for (const Node *pNode : nodeVector)
@@ -772,8 +774,8 @@ const std::string LArHierarchyHelper::MCHierarchy::Node::ToString(const std::str
 //------------------------------------------------------------------------------------------------------------------------------------------
 
 LArHierarchyHelper::MCHierarchy::ReconstructabilityCriteria::ReconstructabilityCriteria() :
-    m_minHits{30},
-    m_minHitsForGoodView{10},
+    m_minHits{3},
+    m_minHitsForGoodView{1},
     m_minGoodViews{2},
     m_removeNeutrons{true}
 {
@@ -811,7 +813,7 @@ LArHierarchyHelper::RecoHierarchy::RecoHierarchy()
 
 LArHierarchyHelper::RecoHierarchy::~RecoHierarchy()
 {
-    for (const auto &[pRoot, nodeVector] : m_interactions)
+    for (const auto &[ pRoot, nodeVector ] : m_interactions)
     {
         for (const Node *pNode : nodeVector)
             delete pNode;
@@ -1301,12 +1303,10 @@ void LArHierarchyHelper::MatchInfo::Match()
             RecoHierarchy::NodeVector recoNodes;
             m_recoHierarchy.GetFlattenedNodes(pRootPfo, recoNodes);
 
-            std::sort(mcNodes.begin(), mcNodes.end(), [](const MCHierarchy::Node *lhs, const MCHierarchy::Node *rhs) {
-                return lhs->GetCaloHits().size() > rhs->GetCaloHits().size();
-            });
-            std::sort(recoNodes.begin(), recoNodes.end(), [](const RecoHierarchy::Node *lhs, const RecoHierarchy::Node *rhs) {
-                return lhs->GetCaloHits().size() > rhs->GetCaloHits().size();
-            });
+            std::sort(mcNodes.begin(), mcNodes.end(),
+                [](const MCHierarchy::Node *lhs, const MCHierarchy::Node *rhs) { return lhs->GetCaloHits().size() > rhs->GetCaloHits().size(); });
+            std::sort(recoNodes.begin(), recoNodes.end(),
+                [](const RecoHierarchy::Node *lhs, const RecoHierarchy::Node *rhs) { return lhs->GetCaloHits().size() > rhs->GetCaloHits().size(); });
 
             for (const RecoHierarchy::Node *pRecoNode : recoNodes)
             {
@@ -1482,11 +1482,11 @@ void LArHierarchyHelper::MatchInfo::Print(const MCHierarchy &mcHierarchy) const
 
         const LArMCParticle *const pLArRoot{dynamic_cast<const LArMCParticle *const>(pRootMC)};
         if (pLArRoot)
-            std::cout << "=== MC Interaction : PDG " << std::to_string(pLArRoot->GetParticleId())
-                      << " Energy: " << std::to_string(pLArRoot->GetEnergy()) << " Type: " << descriptor.ToString() << std::endl;
+            std::cout << "=== MC Interaction : PDG " << std::to_string(pLArRoot->GetParticleId()) << " Energy: " <<
+                std::to_string(pLArRoot->GetEnergy()) << " Type: " << descriptor.ToString() << std::endl;
         else
-            std::cout << "=== MC Interaction : PDG " << std::to_string(pRootMC->GetParticleId())
-                      << " Energy: " << std::to_string(pRootMC->GetEnergy()) << " Type: " << descriptor.ToString() << std::endl;
+            std::cout << "=== MC Interaction : PDG " << std::to_string(pRootMC->GetParticleId()) << " Energy: " <<
+                std::to_string(pRootMC->GetEnergy()) << " Type: " << descriptor.ToString() << std::endl;
 
         unsigned int nNeutrinoMCParticles{this->GetNNeutrinoMCNodes(pRootMC)}, nNeutrinoRecoParticles{0};
         unsigned int nCosmicMCParticles{this->GetNCosmicRayMCNodes(pRootMC)}, nCosmicRecoParticles{0};
@@ -1510,10 +1510,10 @@ void LArHierarchyHelper::MatchInfo::Print(const MCHierarchy &mcHierarchy) const
                 const float completeness{match.GetCompleteness(pRecoNode)};
                 if (completeness > 0.1f)
                     std::cout << "   Matched " << sharedHits << " out of " << recoHits << " with purity " << purity << " and completeness "
-                              << completeness << std::endl;
+                        << completeness << std::endl;
                 else
-                    std::cout << "   (Below threshold) " << sharedHits << " out of " << recoHits << " with purity " << purity
-                              << " and completeness " << completeness << std::endl;
+                    std::cout << "   (Below threshold) " << sharedHits << " out of " << recoHits << " with purity " << purity << " and completeness "
+                        << completeness << std::endl;
             }
             if (nodeVector.empty())
             {

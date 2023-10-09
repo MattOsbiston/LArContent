@@ -319,7 +319,7 @@ float LArHitWidthHelper::GetClosestDistanceToPoint2D(const CaloHit *const pCaloH
     return std::sqrt((deltaX * deltaX) + (modDeltaZ * modDeltaZ));
 }
 
-//------------------------------------------------------------------------------------------------------------------------------------------
+//---------------------------------------------------------------------------------------------------------------------
 
 float LArHitWidthHelper::GetClosestDistance(const CaloHit *const pThisCaloHit, const CaloHitList &caloHitList)
 {
@@ -336,7 +336,7 @@ float LArHitWidthHelper::GetClosestDistance(const CaloHit *const pThisCaloHit, c
     return closestDistance;
 }
 
-//------------------------------------------------------------------------------------------------------------------------------------------
+//-------------------------------------------------------------------------------------------------------------------------------------------
 
 float LArHitWidthHelper::GetClosestDistance(const CaloHit *const pCaloHit1, const CaloHit *const pCaloHit2)
 {
