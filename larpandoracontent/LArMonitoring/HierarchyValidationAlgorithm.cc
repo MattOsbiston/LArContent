@@ -293,7 +293,6 @@ void HierarchyValidationAlgorithm::MCValidation(const LArHierarchyHelper::MatchI
 	    recoHierarchy.GetFlattenedNodes(pRoot, nodes);
             for (const LArHierarchyHelper::RecoHierarchy::Node *pNode : nodes)
             {
-                // std::cout << "Node size: " << pNode->GetRecoParticles().size() << std::endl;
                 recoNodeToRootMap[pNode] = pRoot;
 	    }
         }
@@ -307,14 +306,11 @@ void HierarchyValidationAlgorithm::MCValidation(const LArHierarchyHelper::MatchI
                 const LArHierarchyHelper::MCHierarchy::Node *pMCNode{matches.GetMC()};
 		if (pMCNode->GetHierarchyTier() == 1)
                 {
-		    // std::cout << "Node size (MC): " << pMCNode->GetMCParticles().size() << std::endl;
 		    const MCParticle *const pLeadingMC{pMCNode->GetLeadingMCParticle()};
                     primaries.emplace_back(pLeadingMC);
                 }
-		//allHits.emplace_back(pMCNode->GetCaloHits());
             }
             primaries.sort(LArMCParticleHelper::SortByMomentum);
-            //const InteractionDescriptor descriptor{LArInteractionTypeHelper::GetInteractionDescriptor(primaries)};
 
             for (const LArHierarchyHelper::MCMatches &matches : matchInfo.GetMatches(pRoot))
             {
