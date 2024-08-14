@@ -206,6 +206,7 @@ private:
     float m_maxTransverseDisplacement;   ///<
     float m_twoViewChi2Cut;              ///<
     float m_threeViewChi2Cut;            ///<
+    float m_fitPitchMultiplier           ///< modifier value for the size of the fit pitch
 };
 
 } // namespace lar_content

@@ -24,7 +24,8 @@ VertexBasedPfoRecoveryAlgorithm::VertexBasedPfoRecoveryAlgorithm() :
     m_maxLongitudinalDisplacement(5.f),
     m_maxTransverseDisplacement(2.f),
     m_twoViewChi2Cut(5.f),
-    m_threeViewChi2Cut(5.f)
+    m_threeViewChi2Cut(5.f),
+    m_fitPitchMultiplier(1.f)
 {
 }
 
@@ -117,8 +118,9 @@ void VertexBasedPfoRecoveryAlgorithm::BuildSlidingFitResultMap(const ClusterVect
         {
             try
             {
-                const float slidingFitPitch(LArGeometryHelper::GetWirePitch(this->GetPandora(), LArClusterHelper::GetClusterHitType(*iter)));
-                const TwoDSlidingFitResult slidingFitResult(*iter, m_slidingFitHalfWindow, slidingFitPitch);
+                float slidingFitPitch(LArGeometryHelper::GetWirePitch(this->GetPandora(), LArClusterHelper::GetClusterHitType(*iter)));
+	        slidingFitPitch *= m_fitPitchMultiplier;
+		const TwoDSlidingFitResult slidingFitResult(*iter, m_slidingFitHalfWindow, slidingFitPitch);
                 const LArPointingCluster pointingCluster(slidingFitResult);
 
                 if (pointingCluster.GetLengthSquared() < std::numeric_limits<float>::epsilon())
@@ -559,6 +561,9 @@ StatusCode VertexBasedPfoRecoveryAlgorithm::ReadSettings(const TiXmlHandle xmlHa
 
     PANDORA_RETURN_RESULT_IF_AND_IF(
         STATUS_CODE_SUCCESS, STATUS_CODE_NOT_FOUND, !=, XmlHelper::ReadValue(xmlHandle, "ThreeViewChi2Cut", m_threeViewChi2Cut));
+
+    PANDORA_RETURN_RESULT_IF_AND_IF(
+        STATUS_CODE_SUCCESS, STATUS_CODE_NOT_FOUND, !=, XmlHelper::ReadValue(xmlHandle, "FitPitchMultiplier", m_fitPitchMultiplier));
 
     return STATUS_CODE_SUCCESS;
 }
