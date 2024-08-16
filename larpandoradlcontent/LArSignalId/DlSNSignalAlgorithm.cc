@@ -677,7 +677,7 @@ StatusCode DlSNSignalAlgorithm::CheatedSeparation()
                             photonCandidatesU.emplace_back(pCaloHit);
                         }
 	            }
-	            if (std::abs(pMainMCParticle->GetParticleId()) == E_MINUS)
+		    else if (std::abs(pMainMCParticle->GetParticleId()) == E_MINUS)
 	            {
 	                if (isU)
                         {
